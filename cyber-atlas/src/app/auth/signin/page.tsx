@@ -33,7 +33,7 @@ export default function SigninPage() {
             lastLogin: new Date(),
           });
 
-          router.push("/Home");
+          router.push("/home");
         },
         async (error) => {
           console.warn("Location not available:", error);
@@ -42,7 +42,7 @@ export default function SigninPage() {
             lastLogin: new Date(),
           });
 
-          router.push("/Home");
+          router.push("/home");
         }
       );
     } catch (err: any) {
@@ -92,7 +92,7 @@ export default function SigninPage() {
         <p className="mt-4 text-center text-gray-300">
           Don't have an account?{" "}
           <a
-            href="/Auth/signup"
+            href="/auth/signup"
             className="text-cyan-400 font-semibold hover:underline"
           >
             Sign Up
