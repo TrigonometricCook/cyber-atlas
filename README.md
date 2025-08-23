@@ -1,10 +1,10 @@
-# 🚀 Project: CyberAtlas  
+# Project: CyberAtlas  
 
 ### *Making Cyber Safety Simple, Relatable, and Trustworthy*  
 
 ---
 
-## 👥 Team Info  
+## Team Info  
 **Team Name:** Nirvana  
 
 **Team Members:**  
@@ -16,14 +16,14 @@
 
 ---
 
-## 🎯 Theme: Safety and Security  
+## Theme: Safety and Security  
 With cyber fraud cases rapidly increasing in India—from phishing emails and fake OTP calls to UPI scams and identity theft—different demographics such as students, professionals, homemakers, rural users, and senior citizens face unique risks and challenges.  
 
 CyberAtlas is an innovative and adaptable platform that raises awareness, educates users, and empowers them to recognize, prevent, and respond to such threats. It makes cyber safety **simple, relatable, and trustworthy**, while remaining flexible enough to reach diverse groups.  
 
 ---
 
-## 💡 Our Solution: CyberAtlas  
+## Our Solution: CyberAtlas  
 A **community-driven, AI-powered platform** that makes cyber safety simple and relatable.  
 
 - **Threat Reports** – A shared hub where users report and read real scam stories, creating awareness through lived experiences.  
@@ -39,7 +39,7 @@ A **community-driven, AI-powered platform** that makes cyber safety simple and r
 
 ---
 
-## 🛠️ Tech Stacks and APIs Used  
+## 🛠Tech Stacks and APIs Used  
 - **Frontend:** Next.js, React, TypeScript, Tailwind CSS  
 - **Backend:** Firebase, Python, FastAPI  
 - **Deployment:** Vercel  
@@ -48,7 +48,7 @@ A **community-driven, AI-powered platform** that makes cyber safety simple and r
 
 ---
 
-## 🔐 How CyberAtlas Solves the Problem  
+## How CyberAtlas Solves the Problem  
 
 CyberAtlas tackles the growing wave of scams and cyber fraud in India by combining community participation and AI-powered tools into one trusted platform.  
 
@@ -61,7 +61,7 @@ CyberAtlas tackles the growing wave of scams and cyber fraud in India by combini
 
 ---
 
-## 🏆 Hackathon Challenges & Our Solutions  
+## Hackathon Challenges & Our Solutions  
 
 ### **Challenge 1: User Authentication**  
 **Requirement:** Implement a secure user authentication method to ensure only legitimate users access the platform and protect sensitive user data.  
