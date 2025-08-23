@@ -93,7 +93,7 @@ export default function CybercrimeNewsPage() {
   };
 
   const handleBackToReports = () => {
-    router.push("/Home"); // Adjust path as needed
+    router.push("/home"); // Adjust path as needed
   };
 
   if (loading && articles.length === 0) {

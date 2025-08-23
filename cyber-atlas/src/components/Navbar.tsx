@@ -2,12 +2,15 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { signOut } from "firebase/auth";
+import { auth } from "@/lib/firebase"; // adjust path if needed
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
   const [currentPath, setCurrentPath] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     setCurrentPath(pathname);
@@ -16,20 +19,24 @@ export default function Navbar() {
   const toggleMenu = () => setIsOpen(!isOpen);
 
   const navLinks = [
-    { name: "Home", href: "/Home" },
-    { name: "Threat Reports", href: "/Home/Posts" },
-    { name: "Verify Threat", href: "/Home/Verify" },
-    { name: "Cyber Intel", href: "/Home/News" },
-    { name: "Threat Map", href: "/Home/Map" },
-    { name: "Phish Finder", href: "/Home/phish-finder" }
+    { name: "Home", href: "/home" },
+    { name: "Threat Reports", href: "/home/posts" },
+    { name: "Verify Threat", href: "/home/verify" },
+    { name: "Cyber Intel", href: "/home/news" },
+    { name: "Threat Map", href: "/home/map" },
+    { name: "Phish Finder", href: "/home/phish-finder" },
   ];
 
-  const handleLogout = () => {
-    console.log("User logged out");
-    // Add your auth logout logic here
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      console.log("User logged out");
+      router.push("/"); // redirect to landing/login page
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
   };
 
-  // Shared classes for hover & active effect
   const activeClasses =
     "bg-[#00ffff]/30 text-[#00ffff] shadow-[0_0_12px_#00ffff]";
 
@@ -39,7 +46,7 @@ export default function Navbar() {
         <div className="flex justify-between h-16 items-center">
           {/* Logo + Website Name */}
           <Link
-            href="/Home"
+            href="/home"
             className="flex items-center space-x-2 hover:text-[#0ff] transition-colors"
           >
             <svg
@@ -61,7 +68,7 @@ export default function Navbar() {
             </span>
           </Link>
 
-          {/* Desktop Menu + Log Out */}
+          {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-4 font-sans">
             <div className="flex space-x-6">
               {navLinks.map((link) => (

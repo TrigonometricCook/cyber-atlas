@@ -85,7 +85,7 @@ export default function SignupPage() {
         createdAt: new Date(),
       });
 
-      router.push("/Home");
+      router.push("/home");
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
       setMessage(`❌ Error: ${errorMessage}`);
@@ -178,7 +178,7 @@ export default function SignupPage() {
         <p className="mt-4 text-center text-gray-300">
           Already have an account?{" "}
           <a
-            href="/Auth/signin"
+            href="/auth/signin"
             className="text-cyan-400 font-semibold hover:underline"
           >
             Sign In
