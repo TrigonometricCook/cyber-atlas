@@ -1,193 +1,82 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { auth, db } from "@/lib/firebase";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import Link from "next/link";
 
-export default function SignupPage() {
-  const router = useRouter();
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    password: "",
-    type: "student",
-  });
-  const [step, setStep] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
-
-  const userTypes = [
-    "Student",
-    "Homemaker",
-    "Senior Citizen",
-    "Employee",
-    "Freelancer",
-    "Other",
-  ];
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleTypeSelect = (type: string) => {
-    setForm({ ...form, type: type.toLowerCase() });
-  };
-
-  const handleNext = (e: React.FormEvent) => {
-    e.preventDefault();
-    setStep(2);
-  };
-
-  const handleSubmit = async () => {
-    setLoading(true);
-    setMessage("");
-
-    try {
-      const userCred = await createUserWithEmailAndPassword(
-        auth,
-        form.email,
-        form.password
-      );
-
-      if (form.name) {
-        await updateProfile(userCred.user, { displayName: form.name });
-      }
-
-      // Function to get location as a Promise
-      const getLocation = () =>
-        new Promise<{ latitude: number; longitude: number } | null>((resolve) => {
-          if (!navigator.geolocation) {
-            resolve(null);
-          } else {
-            navigator.geolocation.getCurrentPosition(
-              (position) => {
-                const { latitude, longitude } = position.coords;
-                resolve({ latitude, longitude });
-              },
-              (error) => {
-                console.warn("Location not available:", error);
-                resolve(null);
-              },
-              { enableHighAccuracy: true, timeout: 10000 }
-            );
-          }
-        });
-
-      const location = await getLocation();
-
-      await setDoc(doc(db, "users", userCred.user.uid), {
-        name: form.name,
-        email: form.email,
-        type: form.type,
-        location,
-        createdAt: new Date(),
-      });
-
-      router.push("/home");
-    } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
-      setMessage(`❌ Error: ${errorMessage}`);
-    } finally {
-      setLoading(false);
-    }
-  };
+export default function LandingPage() {
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 via-teal-900 to-green-900">
-      <div className="w-full max-w-md bg-black/50 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-cyan-500/20">
-        <h1 className="text-3xl font-bold text-cyan-400 text-center mb-6">
-          Create an Account
-        </h1>
-
-        {/* Step 1: Name, Email, Password */}
-        {step === 1 && (
-          <form onSubmit={handleNext} className="space-y-4">
-            <input
-              type="text"
-              name="name"
-              placeholder="Full Name"
-              value={form.name}
-              onChange={handleChange}
-              required
-              className="w-full p-3 rounded-lg bg-black/60 border border-cyan-500/30 placeholder-gray-400 text-white focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition"
-            />
-
-            <input
-              type="email"
-              name="email"
-              placeholder="Email Address"
-              value={form.email}
-              onChange={handleChange}
-              required
-              className="w-full p-3 rounded-lg bg-black/60 border border-cyan-500/30 placeholder-gray-400 text-white focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition"
-            />
-
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={form.password}
-              onChange={handleChange}
-              required
-              className="w-full p-3 rounded-lg bg-black/60 border border-cyan-500/30 placeholder-gray-400 text-white focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition"
-            />
-
-            <button
-              type="submit"
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-green-500 hover:from-cyan-400 hover:to-green-400 text-gray-900 font-semibold shadow-lg transition-all"
+    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-teal-900 to-green-900 text-white">
+      <div className="max-w-6xl mx-auto px-4 py-20">
+        {/* Hero Section */}
+        <div className="text-center mb-16">
+          <h1 className="text-6xl font-bold bg-gradient-to-r from-cyan-400 to-green-400 bg-clip-text text-transparent mb-6 drop-shadow-lg">
+            Cyber Atlas
+          </h1>
+          <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
+            Your comprehensive platform for cybercrime awareness, threat detection, and community protection. 
+            Stay informed, stay safe, and help build a more secure digital world.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              href="/Auth/signup"
+              className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-green-500 hover:from-cyan-400 hover:to-green-400 text-gray-900 font-semibold rounded-xl shadow-lg transition-all transform hover:scale-105"
             >
-              Next
-            </button>
-          </form>
-        )}
-
-        {/* Step 2: User Type Selection */}
-        {step === 2 && (
-          <div className="space-y-4">
-            <p className="text-gray-300 mb-2 font-medium text-center">Select User Type:</p>
-            <div className="grid grid-cols-2 gap-2">
-              {userTypes.map((type) => (
-                <button
-                  key={type}
-                  type="button"
-                  onClick={() => handleTypeSelect(type)}
-                  className={`py-3 px-4 rounded-xl font-semibold shadow transition text-center
-                    ${
-                      form.type === type.toLowerCase()
-                        ? "bg-gradient-to-r from-cyan-500 to-green-500 border border-cyan-400 text-gray-900"
-                        : "bg-gray-800/80 border border-cyan-500/30 text-white hover:bg-gradient-to-r hover:from-cyan-400 hover:to-green-400"
-                    }`}
-                >
-                  {type}
-                </button>
-              ))}
-            </div>
-
-            <button
-              onClick={handleSubmit}
-              disabled={loading}
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-green-500 hover:from-cyan-400 hover:to-green-400 text-gray-900 font-semibold shadow-lg transition-all mt-4"
+              Get Started
+            </Link>
+            <Link
+              href="/Auth/signin"
+              className="px-8 py-4 bg-black/50 border border-cyan-500/30 hover:bg-cyan-500/10 text-cyan-400 font-semibold rounded-xl transition-all"
             >
-              {loading ? "Signing up..." : "Sign Up"}
-            </button>
+              Sign In
+            </Link>
           </div>
-        )}
+        </div>
 
-        <p className="mt-4 text-center text-gray-300">
-          Already have an account?{" "}
-          <a
-            href="/auth/signin"
-            className="text-cyan-400 font-semibold hover:underline"
+        {/* Features Section */}
+        <div className="grid md:grid-cols-3 gap-8 mb-16">
+          <div className="bg-black/50 backdrop-blur-sm border border-cyan-500/20 p-6 rounded-xl text-center">
+            <div className="w-16 h-16 bg-gradient-to-r from-cyan-500 to-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-semibold text-cyan-300 mb-2">Threat Detection</h3>
+            <p className="text-gray-300">Advanced AI-powered analysis to identify and verify potential scams and cyber threats.</p>
+          </div>
+
+          <div className="bg-black/50 backdrop-blur-sm border border-cyan-500/20 p-6 rounded-xl text-center">
+            <div className="w-16 h-16 bg-gradient-to-r from-cyan-500 to-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-semibold text-cyan-300 mb-2">Latest News</h3>
+            <p className="text-gray-300">Stay updated with the latest cybercrime news and security alerts from around the world.</p>
+          </div>
+
+          <div className="bg-black/50 backdrop-blur-sm border border-cyan-500/20 p-6 rounded-xl text-center">
+            <div className="w-16 h-16 bg-gradient-to-r from-cyan-500 to-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-semibold text-cyan-300 mb-2">Community Reports</h3>
+            <p className="text-gray-300">Report and track cybercrime incidents in your area to help protect your community.</p>
+          </div>
+        </div>
+
+        {/* CTA Section */}
+        <div className="text-center">
+          <h2 className="text-3xl font-bold text-cyan-300 mb-4">Ready to protect yourself?</h2>
+          <p className="text-gray-300 mb-8">Join thousands of users who are already staying safe with Cyber Atlas.</p>
+          <Link
+            href="/Auth/signup"
+            className="inline-block px-8 py-4 bg-gradient-to-r from-cyan-500 to-green-500 hover:from-cyan-400 hover:to-green-400 text-gray-900 font-semibold rounded-xl shadow-lg transition-all transform hover:scale-105"
           >
-            Sign In
-          </a>
-        </p>
-
-        {message && (
-          <p className="mt-4 text-center text-red-400 font-medium">{message}</p>
-        )}
+            Create Your Account
+          </Link>
+        </div>
       </div>
     </div>
   );
