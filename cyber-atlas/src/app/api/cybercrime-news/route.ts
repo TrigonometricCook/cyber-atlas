@@ -1,7 +1,7 @@
 // app/api/cybercrime-news/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 
-const API_KEY = "facebf0e18704e9aadfeb08b134d3cd2";
+const API_KEY = "33b2ce4be9754a17a9279913f9663591";
 const NEWS_API_URL = "https://newsapi.org/v2/everything";
 
 export async function POST(request: NextRequest) {
