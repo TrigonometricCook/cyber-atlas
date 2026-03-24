@@ -16,7 +16,7 @@ type FeatureLink = {
 
 const features: FeatureLink[] = [
   {
-    name: "Threat Reports",
+    name: "Threat-Reports",
     href: "/home/posts",
     description: "View and submit verified threat reports.",
     details:
@@ -24,7 +24,7 @@ const features: FeatureLink[] = [
     image: "report.jpg",
   },
   {
-    name: "Verify Threat",
+    name: "Verify-Threat",
     href: "/home/verify",
     description: "Check the authenticity of suspicious messages or emails.",
     details:
@@ -32,7 +32,7 @@ const features: FeatureLink[] = [
     image: "verify.webp",
   },
   {
-    name: "Cyber Intel",
+    name: "Cyber-Intel",
     href: "/home/news",
     description: "Stay updated with latest cybersecurity news.",
     details:
@@ -40,7 +40,7 @@ const features: FeatureLink[] = [
     image: "news.jpg",
   },
   {
-    name: "Threat Map",
+    name: "Threat-Map",
     href: "/home/map",
     description: "Visualize threat locations and trends worldwide.",
     details:
@@ -48,7 +48,7 @@ const features: FeatureLink[] = [
     image: "/map.png",
   },
   {
-    name: "Phish Finder",
+    name: "Phish-Finder",
     href: "/home/phish-finder",
     description: "Detect phishing attempts and unsafe URLs.",
     details:
